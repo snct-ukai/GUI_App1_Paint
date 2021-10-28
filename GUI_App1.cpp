@@ -3,6 +3,7 @@
 
 #include "framework.h"
 #include "GUI_App1.h"
+#include "windowsx.h"
 
 #define MAX_LOADSTRING 100
 
@@ -140,7 +141,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     switch (message)
     {
     case WM_CREATE:
-        mx = my = mxo = myo = -1;
+        mx = -1;
+        my = -1;
+        mxo = -1;
+        myo = -1;
+        break;
 
     case WM_CLOSE: // ウィンドウ閉じるメッセージ
         for (int i = 0; i < 4; i++) {
@@ -166,6 +171,38 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
+
+    case WM_LBUTTONDOWN:
+    case WM_MOUSEMOVE:
+        if (wParam & MK_LBUTTON) {
+            mxo = mx;
+            myo = my;
+            mx = GET_X_LPARAM(lParam);
+            my = GET_Y_LPARAM(lParam);
+            InvalidateRect(hWnd, NULL, FALSE);
+        }
+        break;
+
+    case WM_LBUTTONUP:
+        mx = -1;
+        my = -1;
+        mxo = -1;
+        myo = -1;
+        break;
+
+    case WM_PAINT:
+    {
+        PAINTSTRUCT ps;
+        HDC hdc = BeginPaint(hWnd, &ps);
+        // TODO: HDC を使用する描画コードをここに追加してください...
+        if (mx >= 0 && my >= 0 && mxo >= 0 && myo >= 0) {
+            MoveToEx(hdc, mx, my, NULL);
+            LineTo(hdc, mxo, myo);
+        }
+        EndPaint(hWnd, &ps);
+    }
+    break;
+
     case WM_KEYDOWN:
         switch (wParam) {
         case VK_LEFT:
@@ -187,16 +224,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             ++ky;
             InvalidateRect(hWnd, NULL, TRUE);
             break;
-        }
-        break;
-    case WM_PAINT:
-        {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: HDC を使用する描画コードをここに追加してください...
-            Italy(hdc, kx, ky);
-
-            EndPaint(hWnd, &ps);
         }
         break;
     case WM_DESTROY:

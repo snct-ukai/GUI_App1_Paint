@@ -205,25 +205,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_KEYDOWN:
         switch (wParam) {
-        case VK_LEFT:
-            --kx;
+        case VK_DELETE:
             InvalidateRect(hWnd, NULL, TRUE);
-            break;
-
-        case VK_RIGHT:
-            ++kx;
-            InvalidateRect(hWnd, NULL, TRUE);
-            break;
-
-        case VK_UP:
-            --ky;
-            InvalidateRect(hWnd, NULL, TRUE);
-            break;
-
-        case VK_DOWN:
-            ++ky;
-            InvalidateRect(hWnd, NULL, TRUE);
-            break;
         }
         break;
     case WM_DESTROY:

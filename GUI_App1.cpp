@@ -186,8 +186,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_LBUTTONUP:
         mx = -1;
         my = -1;
-        mxo = -1;
         myo = -1;
+        mxo = -1;
         break;
 
     case WM_PAINT:
@@ -207,6 +207,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         switch (wParam) {
         case VK_DELETE:
             InvalidateRect(hWnd, NULL, TRUE);
+            break;
         }
         break;
     case WM_DESTROY:
